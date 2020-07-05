@@ -1,9 +1,10 @@
-class config:
+import os
+class  Config:
 	'''
 	General configuration parnet class
 	'''
 
-class Production(config):
+class Production(Config):
 
 	'''
 	Production configuration child class
@@ -13,12 +14,13 @@ class Production(config):
 	Config:The parent configuration class with general configuration settings
 	 '''
 	pass
+
 class DevConfig(Config):
      '''
      Development configuration child class
 
      Args:
-     Config:The parent configuration clas with General settings
+     Config:The parent configuration class with General settings
 
      '''     
      DEBUG = True
