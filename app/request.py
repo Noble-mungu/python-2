@@ -29,8 +29,7 @@ def get_sources(category):
 		if get_sources_response['sources']:
 			sources_results_list = get_sources_response['sources']
 			sources_results = process_results(movie_results_list)
-
-	return sources_results
+return sources_results
 
 def process_results(sources_results):
 	'''
