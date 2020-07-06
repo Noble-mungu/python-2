@@ -1,22 +1,22 @@
 import os
 class  Config:
-	'''
-	General configuration parnet class
-	'''
+    '''
+    General configuration parnet class
 
-	NEWS_API_KEY = os.environ.get('NEWS_API_KEY')
+    '''
+    NEWS_API_KEY = os.environ.get('NEWS_API_KEY')
     NEWS_SOURCE_BASE_URL = 'https://newsapi.org/v1/sources?language=en&category={}'
     NEWS_ARTICLES_BASE_URL = 'https://newsapi.org/v1/articles?source={}&apiKey={}'
 class Production(Config):
 
-	'''
-	Production configuration child class
+    '''
+    Production configuration child class
     
 
-	Args:
-	Config:The parent configuration class with general configuration settings
-	 '''
-	pass
+    Args:
+    Config:The parent configuration class with general configuration settings
+     '''
+    pass
 
 class DevConfig(Config):
      '''
@@ -27,12 +27,10 @@ class DevConfig(Config):
 
      '''     
      DEBUG = True
-config_option = {
-	#Enables us to access different configuration option classes.
-    'development':DevConfig,
-    'production':ProdConfig
-
+config_options = {
+    # A to help us access different configuration option classes.
+    'development' : DevConfig,
+    'production' : ProdConfig
 } 
-
 
 
