@@ -1,9 +1,5 @@
 from app import create_app
 from flask_script import Manager,Server
-#Flask-Script is a command line for creating startup configuration
-#Manager initialize the flask script extension
-#Server helps us launch the Server
-#Creating the app instance
 
 app = create_app('development')
 

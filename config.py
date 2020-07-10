@@ -7,7 +7,7 @@ class  Config:
     NEWS_API_KEY = os.environ.get('NEWS_API_KEY')
     NEWS_SOURCE_BASE_URL = 'https://newsapi.org/v1/sources?language=en&category={}'
     NEWS_ARTICLES_BASE_URL = 'https://newsapi.org/v1/articles?source={}&apiKey={}'
-class Production(Config):
+class ProdConfig(Config):
 
     '''
     Production configuration child class
@@ -29,8 +29,8 @@ class DevConfig(Config):
      DEBUG = True
 config_options = {
     # A to help us access different configuration option classes.
-    'development' : DevConfig,
-    'production' : ProdConfig
+'development' : DevConfig,
+'production' : ProdConfig
 } 
 
 
