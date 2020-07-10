@@ -53,3 +53,19 @@ def process_results(sources_results):
         sources_list.append(source_object)
 
     return sources_list
+def get_articles(source):
+    '''
+    Function that gets the json response to our url request
+    '''
+    get_article_url = article_url.format(soure,api_key)
+
+    with urllib.reqest.urlopen(get_articles_url,data=None) as url:
+        get_article_data = url.read()
+        get_article_response =json.loads(grt_article_data)
+        articles_results = None
+
+        if get_aricle_response['articles']
+        articles_results_list = get_article_response['articles']
+        articles_results_list = process-results(articles_results_list)
+
+    return articles_results
