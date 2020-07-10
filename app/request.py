@@ -64,9 +64,10 @@ def get_articles(source):
         get_article_response =json.loads(grt_article_data)
         articles_results = None
 
-        if get_aricle_response['articles']
-        articles_results_list = get_article_response['articles']
-        articles_results_list = process-results(articles_results_list)
+        if get_aricle_response['articles']:
+            
+            articles_results_list = get_article_response['articles']
+            articles_results_list = process-results(articles_results_list)
 
     return articles_results
 

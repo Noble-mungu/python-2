@@ -5,19 +5,15 @@ from flask_bootstrap import Bootstrap
 bootstrap = Bootstrap()
 
 def create_app(config_name):
+    # set up configurations
+	app.config.from_object(config_options[config_name])
+
+	# initialize flask extensions
+	bootstrap.init_app(app)
 
 
-    # Initializing application
-    app = Flask(__name__)
+	# setting config 
+	from .request import configure_request
+	configure_request(app)
 
-    #set up configuration
-    app.config.from_object(config_options[config_name])
-
-    bootstrap.init_app(app)
-
-    from .request import configure_request
-    configure_request(app)
-
-
-    return app
-
+	return app 
