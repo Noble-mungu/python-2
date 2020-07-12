@@ -1,36 +1,29 @@
 import os
-class  Config:
-    '''
-    General configuration parnet class
 
+class Config:
     '''
-    NEWS_API_KEY = os.environ.get('NEWS_API_KEY')
-    NEWS_SOURCE_BASE_URL = 'https://newsapi.org/v1/sources?language=en&category={}'
-    NEWS_ARTICLES_BASE_URL = 'https://newsapi.org/v1/articles?source={}&apiKey={}'
+    Configuration parent class
+    '''
+    NEWS_API_KEY = os.environ.get('HEADLINES_API_KEY')
+    HEADLINES_API_BASE_URL = "https://newsapi.org/v2/top-headlines?country=us&apiKey={}"
+    EVERYTHING_API_BASE_URL = "https://newsapi.org/v2/everything?q={}&apiKey={}"
+    SOURCES_API_BASE_URL = "https://newsapi.org/v2/sources?category={}&apiKey={}"
+    SOURCES_ARTICLE_API_BASE_URL = "https://newsapi.org/v2/top-headlines?id={}&apiKey={}"
 class ProdConfig(Config):
-
     '''
     Production configuration child class
-    
-
-    Args:
-    Config:The parent configuration class with general configuration settings
-     '''
+    '''
     pass
 
 class DevConfig(Config):
-     '''
-     Development configuration child class
+    '''
+    Developement configuration child class
+    '''
+    pass
 
-     Args:
-     Config:The parent configuration class with General settings
+    DEBUG = True
 
-     '''     
-     DEBUG = True
 config_options = {
-    # A to help us access different configuration option classes.
-'development' : DevConfig,
-'production' : ProdConfig
-} 
-
-
+'development':DevConfig,
+'production':ProdConfig
+}

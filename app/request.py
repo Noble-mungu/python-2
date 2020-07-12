@@ -1,95 +1,134 @@
-import urllib.request,json
-from .models import Source,Article
+import urllib.request, json
+from .models import Headlines, Sources
 
-# Getting Api Key
-api_Key = None
-#Getting the base urls
+#getting api key
+api_key = None
+
+#getting the base urls
+headlines_base_url = None
+everything_base_url = None
 sources_base_url = None
-articles_base_url = None
+sources_article_base_url = None
 
 def configure_request(app):
+        global api_key, headlines_base_url, everything_base_url, sources_base_url, sources_article_base_url
+        api_key = '3cb6f94391e348d6a9b7dcd4dba81826'
+        print(api_key)
+        headlines_base_url = app.config["HEADLINES_API_BASE_URL"]
+        print(headlines_base_url.format(api_key))
+        everything_base_url = app.config["EVERYTHING_API_BASE_URL"]
+        sources_base_url = app.config["SOURCES_API_BASE_URL"]
+        sources_article_base_url = app.config["SOURCES_ARTICLE_API_BASE_URL"]
 
+
+def get_headlines():
     '''
-    Function to acquire the api key and base urls
+    Gets the json response to our url request
     '''
-    global api_Key,sources_base_url,articles_base_url
-    api_Key = app.config['NEWS_API_KEY']
-    sources_base_url = app.config['NEWS_SOURCES_BASE_URL']
-    articles_base_url = app.config['NEWS_ARTICLES_BASE_URL']
+    get_headlines_url = headlines_base_url.format(api_key)
+    print(get_headlines_url)
+
+    with urllib.request.urlopen(get_headlines_url) as url:
+        get_headlines_data = url.read()
+        get_headlines_response = json.loads(get_headlines_data)
+
+        headlines_results = None
+
+        if get_headlines_response['articles']:
+            headlines_results_list = get_headlines_response['articles']
+            headlines_results = process_results(headlines_results_list)
+
+    return headlines_results
+
+def process_results(headlines_list):
+        '''
+        Processes headlines results and returns a list of objects
+        '''
+        headlines_results = []
+        for headline_item in headlines_list:
+                author = headline_item.get('author')
+                title = headline_item.get('title')
+                description = headline_item.get('description')
+                url = headline_item.get('url')
+                urlToImage = headline_item.get('urlToImage')
+                publishedAt = headline_item.get('publishedAt')
+                content = headline_item.get('content')
+
+                if author and urlToImage and content:
+                        headlines_object = Headlines(author, title, description, url, urlToImage, publishedAt, content)
+                        headlines_results.append(headlines_object)
+        return headlines_results
+                        
+def get_headline():
+        get_headline_details_url = headlines_base_url.format(apiKey)
+        with urllib.request.urlopen(get_headline_details_url) as url:
+                headline_details_data = url.read()
+                headline_details_response = json.loads(headline_details_data)
+
+                headline_object = None
+                if headline_details_response:
+                        author = headline_details_response.get('author')
+                        title = headline_details_response.get('title')
+                        description = headline_details_response.get('description')
+                        url = headline_details_response.get('url')
+                        urlToImage = headline_details_response.get('urlToImage')
+                        publishedAt = headline_details_response.get('publishedAt')
+                        content = headline_details_response.get('content')
+
+                        headline_object = Headlines(author, title, description, url, urlToImage, publishedAt, content)
+
+        return headline_object
+
 def get_sources(category):
-    '''
-    Function that gets the json response to our url request
-    '''
-    get_sources_url = sources_base_url.format(category)
+        '''
+        Gets the json response to our url request
+        '''
+        get_sources_url = sources_base_url.format(category, api_key)
 
-    with urllib.request.urlopen(get_sources_url,data=None) as url:
-        get_sources_data = url.read()
-        get_sources_response = json.loads(get_sources_data)
-        sources_results = None
+        with urllib.request.urlopen(get_sources_url) as url:
+                get_sources_data = url.read()
+                get_sources_response = json.loads(get_sources_data)
 
-        if get_sources_response['sources']:
-            sources_results_list = get_sources_response['sources']
-            sources_results = process_results(movie_results_list)
-    return sources_results
+                sources_results = None
 
-def process_sources(sources_results):
-    '''
-    Function  that processes the sources result and transform them to a list of Objects
-    Args:
-        sources_results: A list of dictionaries that contain sources details
-    Returns :
-        sources_list: A list of sources objects
-    '''
-    sources_list = []
-    for source_item in sources_results:
+                if get_sources_response['sources']:
+                        sources_results_list = get_sources_response['sources']
+                        sources_results = process_sources(sources_results_list)
 
-        id = source_item.get('id')
-        name = source_item.get('name')
-        description = source_item.get('description')
-        url = source_item.get('url')
-        category = source_item.get('category')
+        return sources_results
 
-        source_object = Source(id,name,description,url,category)
-        sources_list.append(source_object)
+def process_sources(sources):
+        """
+        Process list of sources and returns list of source objects
+        """
+        source_results = []
+        
+        for source in sources:
+                id = source.get("id")
+                name = source.get("name")
+                description = source.get("description")
+                url = source.get("url")
+                category = source.get("category")
+                language = source.get("language")
+                country = source.get("country")
 
-    return sources_list
-def get_articles(source):
-    '''
-    Function that gets the json response to our url request
-    '''
-    get_article_url = article_url.format(soure,api_key)
+                if description:
+                        new_source = Sources(id, name, description, url, category, language, country)
+                        source_results.append(new_source)
+        return source_results
 
-    with urllib.reqest.urlopen(get_articles_url,data=None) as url:
-        get_article_data = url.read()
-        get_article_response =json.loads(grt_article_data)
-        articles_results = None
+def get_sources_articles(id):
 
-        if get_aricle_response['articles']:
-            
-            articles_results_list = get_article_response['articles']
-            articles_results_list = process-results(articles_results_list)
+        get_sources_article_url = sources_article_base_url.format(id,api_key)
 
-    return articles_results
+        with urllib.request.urlopen(get_headlines_url) as url:
+                get_headlines_data = url.read()
+                get_headlines_response = json.loads(get_headlines_data)
 
-def process_article(articles_results):
-    '''
-    Function that process the article results and transform them to list of objects
-    Args:
-    articles_results:A list of dictionaries that contain articles details
+                headlines_results = None
 
-    Returns:
-    articles_list:A list of articles objects
-    '''
-    articles_list =[]
-    for article_item in articles_results:
-        author =article_item.get('author')
-        title = article_item.get('title')
-        description = article_item.get('description')
-        url = article_item.get('url')
-        image = article_item.get('urlToImage')
-        date = article_item.get('publishedAt')
+                if get_headlines_response['articles']:
+                        headlines_results_list = get_headlines_response['articles']
+                        headlines_results = process_results(headlines_results_list)
 
-        article_object = Article(author,description,url,image,date)
-        article_list.append(article_object)
-
-    return article_list    
+        return headlines_results
